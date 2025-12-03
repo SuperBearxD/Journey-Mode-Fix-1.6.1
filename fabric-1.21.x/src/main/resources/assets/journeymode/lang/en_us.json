@@ -1,0 +1,12 @@
+{
+    "key.journeymode.open_menu": "Open Journey Mode",
+    "category.journeymode": "Journey Mode",
+    "journeymode.menu.title": "Journey Mode",
+    "journeymode.command.enabled": "Journey Mode enabled",
+    "journeymode.command.disabled": "Journey Mode disabled",
+    "journeymode.command.status.enabled": "Journey Mode is currently enabled",
+    "journeymode.command.status.disabled": "Journey Mode is currently disabled",
+    "journeymode.blacklist_message": "%s is blacklisted",
+    "journeymode.unlock_message": "Unlocked %s! (Threshold: %d)",
+    "journeymode.deposit_message": "Deposited %d %s - Progress: %d/%d (%d%%)"
+}

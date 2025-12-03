@@ -1,402 +1,260 @@
 # Journey Mode
 
-A Minecraft mod that allows you to unlock unlimited access to items after collecting enough of them. Available for **both Fabric and NeoForge** on **Minecraft 1.21 - 1.21.10**.
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.x-green.svg)](https://www.minecraft.net/)
+[![Fabric](https://img.shields.io/badge/Fabric-0.16.9-blue.svg)](https://fabricmc.net/)
+[![NeoForge](https://img.shields.io/badge/NeoForge-21.1.80-orange.svg)](https://neoforged.net/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[![NeoForge](https://img.shields.io/badge/NeoForge-1.21.x-orange.svg)](https://neoforged.net/)
-[![Fabric](https://img.shields.io/badge/Fabric-1.21.x-blue.svg)](https://fabricmc.net/)
-[![License](https://img.shields.io/github/license/Aryangpt007/Journey-Mode)](LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/Aryangpt007/Journey-Mode/total)](https://github.com/Aryangpt007/Journey-Mode/releases)
+> **Note:** This is an improved fork with critical bug fixes and quality-of-life features for Fabric 1.21.x. See [CHANGELOG.md](CHANGELOG.md) for detailed changes.
 
 ## 🎮 What is Journey Mode?
 
-Journey Mode transforms your Minecraft experience by allowing you to **unlock items permanently** after collecting enough of them. Once unlocked, you can retrieve unlimited copies of that item whenever you need them!
+Journey Mode is a Minecraft mod that introduces a Terraria-inspired research and duplication system. Collect items through normal gameplay, deposit them to "research" them, and once unlocked, obtain infinite copies without using resources!
 
-**Perfect for:**
-- 🏗️ **Builders** - Never run out of building materials
-- ⚗️ **Modpack Players** - Streamline repetitive crafting
-- 🎯 **Completionists** - Track your item collection progress
-- 🎮 **Casual Players** - Reduce grinding after initial collection
+Perfect for builders, redstone engineers, and anyone who wants to focus on creativity rather than resource gathering.
+
+## 🌟 Fork Improvements (v1.6.1-fabric)
+
+This fork addresses critical stability issues and adds requested features:
+
+### 🔧 Critical Fixes
+- ✅ **Data Persistence:** Player progress now properly saves and loads (JSON-based system)
+- ✅ **Crash Prevention:** Fixed packet registration errors that caused crashes
+- ✅ **Menu Opening:** Resolved GUI not appearing when pressing 'J' key
+- ✅ **Item Overflow:** Excess items now correctly remain in deposit slot
+
+### ✨ New Features
+- 🔊 **Custom Sounds:** 3-sound system with random progress sounds
+- 🔍 **Better UX:** Fixed search box keyboard conflicts
+- 📝 **Translations:** Added missing menu title translation
+
+**Full details:** [CHANGELOG.md](CHANGELOG.md)
+
+---
 
 ## 📸 Screenshots
 
-### Deposit Tab - Empty
-![Empty Deposit Window](https://res.cloudinary.com/dx16xt23r/image/upload/v1761997883/IMG1_l41hi6.png)
-*The deposit tab where you begin your journey*
-
-### Deposit Tab - With Item
-![Deposit Window with Item](https://res.cloudinary.com/dx16xt23r/image/upload/v1761997882/IMG2_pvxj3n.png)
-*Place an item to see how many you need to unlock it*
-
-### Journey Tab - Unlocked Items
-![Journey Tab with Unlocked Items](https://res.cloudinary.com/dx16xt23r/image/upload/v1761997882/IMG3_dguymq.png)
-*Access all your unlocked items with infinite retrieval*
+| Deposit Tab - Empty | Deposit Tab - With Item | Journey Tab - Unlocked Items |
+|:---:|:---:|:---:|
+| ![Deposit Empty](https://via.placeholder.com/250x150?text=Deposit+Empty) | ![Deposit Item](https://via.placeholder.com/250x150?text=Deposit+Item) | ![Journey Tab](https://via.placeholder.com/250x150?text=Journey+Items) |
 
 ## ✨ Features
 
 ### Core Gameplay
-- **Smart Unlock System**: Collect items to unlock infinite access
-  - Dynamic thresholds based on item complexity
-  - Tools & armor: Only 1 required
-  - Raw materials: Full stack (64)
-  - Crafted items: Scaled by recipe depth
-- **Dual-Tab GUI**: Clean interface with Deposit and Journey tabs
-- **Search & Filter**: Quickly find unlocked items in Journey tab
-- **Smart Sorting**: Items sorted by unlock time (newest first)
-- **Progress Tracking**: See exactly how many more items you need
+- **Research System:** Deposit items to unlock infinite duplication
+- **Threshold-Based:** Each item has a unique research requirement (auto-calculated from recipes)
+- **Two Tabs:**
+  - **Deposit:** Place items to research them
+  - **Journey:** Access and duplicate unlocked items
 
 ### Player Control
-- **Toggle System**: Enable/disable Journey Mode per player
+- **Keybinding:** Press `J` to open the Journey Mode menu (configurable)
+- **Commands:**
   - `/journeymode on` - Enable Journey Mode
   - `/journeymode off` - Disable Journey Mode
   - `/journeymode status` - Check current status
-- **Keybind Support**: Press `J` to open the GUI (customizable)
-- **Persistent Data**: Your progress saves across sessions
 
 ### Configuration
-- **Item Blacklist**: Prevent specific items from being unlockable
-- **Custom Thresholds**: Override unlock requirements per item
-- **Hot-Reload**: Config changes apply without restart
-- **JSON Format**: Easy to read and edit
+- **Custom Thresholds:** Override default item requirements
+- **Blacklist System:** Prevent specific items from being researched
+- **JSON-Based:** Easy configuration files in `config/journeymode/`
 
 ### Multi-Loader Support
-- ✅ **NeoForge 1.21.x** - Full support for 1.21 through 1.21.10
-- ✅ **Fabric 1.21.x** - Full support for 1.21 through 1.21.10
-- 🔄 **90% Shared Code** - Identical features and behavior across loaders
+- ✅ **Fabric** 1.21.x (Stable)
+- ✅ **NeoForge** 1.21.1 (Stable)
 
 ## 📦 How It Works
 
-1. **Deposit Items**: Open the Journey Mode menu (press `J`) and place items in the deposit slot
-   
-   ![Empty Deposit Window](https://res.cloudinary.com/dx16xt23r/image/upload/v1761997883/IMG1_l41hi6.png)
+1. **Collect Items:** Play normally and gather items
+2. **Open Menu:** Press `J` to open Journey Mode
+3. **Deposit Items:** Place items in the deposit slot
+4. **Research Progress:** Each item has a threshold (e.g., 32 for common items, 192+ for rare ones)
+5. **Unlock:** Once threshold is met, the item is permanently unlocked
+6. **Duplicate:** Access unlocked items infinitely from the Journey tab
 
-2. **Track Progress**: Each item you deposit counts toward the unlock threshold
-   
-   ![Deposit Window with Progress](https://res.cloudinary.com/dx16xt23r/image/upload/v1761997882/IMG2_pvxj3n.png)
-
-3. **Unlock Items**: Once you've deposited enough of an item type, it becomes unlocked
-
-4. **Infinite Retrieval**: Switch to the Journey tab and click any unlocked item to retrieve it
-   
-   ![Journey Tab](https://res.cloudinary.com/dx16xt23r/image/upload/v1761997882/IMG3_dguymq.png)
-   
-   - Left-click: Get 1 item
-   - Shift + Left-click: Get 64 items
+**Threshold Calculation:**
+- Recipe depth (crafting complexity)
+- Item rarity
+- Stack size
+- Custom overrides (configurable)
 
 ## 🚀 Installation
 
 ### Requirements
-
-#### For NeoForge
-- **Minecraft**: 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, or 1.21.10
-- **NeoForge**: 21.1.72 or higher
-- **Java**: 21 or higher
-
-#### For Fabric
-- **Minecraft**: 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, or 1.21.10
-- **Fabric Loader**: 0.16.5 or higher
-- **Fabric API**: 0.105.0+1.21.1 or higher (required dependency)
-- **Java**: 21 or higher
+- Minecraft 1.21+ / 1.21.1
+- Fabric Loader 0.16.9+ or NeoForge 21.1.80+
+- Fabric API (if using Fabric)
 
 ### Download
-
-**Choose your mod loader:**
-- 🟠 [**NeoForge Version**](https://github.com/Aryangpt007/Journey-Mode/releases/latest) - `journeymode-1.6.0.jar`
-- 🔵 [**Fabric Version**](https://github.com/Aryangpt007/Journey-Mode/releases/tag/fabric-v1.0.0) - `journeymode_fab-1.0.0.jar`
-
-**Also available on:**
-- [CurseForge](https://www.curseforge.com/minecraft/mc-mods/journey-mode)
-- [Modrinth](https://modrinth.com/mod/journey-mode)
+1. Download the latest release from [Releases](https://github.com/Aryangpt007/Journey-Mode/releases)
+   - `journey-mode-1.6.1-fabric.jar` for Fabric
+   - `journey-mode-1.6.0-neoforge.jar` for NeoForge
 
 ### Installation Steps
-
-1. Download the appropriate JAR for your mod loader
-2. Place it in your `.minecraft/mods` folder
-3. **(Fabric only)** Download and install [Fabric API](https://modrinth.com/mod/fabric-api)
-4. Launch Minecraft with the correct profile
-5. Press `J` in-game to open Journey Mode!
+1. Install [Fabric](https://fabricmc.net/use/) or [NeoForge](https://neoforged.net/)
+2. Place the mod JAR in `.minecraft/mods/`
+3. Launch Minecraft
+4. Press `J` in-game to open Journey Mode!
 
 ## 📖 How to Use
 
 ### Getting Started
-
-1. **Enable Journey Mode** (default: enabled)
-   ```
-   /journeymode on
-   ```
-
-2. **Open the GUI** - Press `J` (or your custom keybind)
-
-3. **Deposit Items**
-   - Switch to the **Deposit** tab
-   - Place items in the deposit slot
-   - See the required threshold and your progress
-   - Click **Submit** to deposit
-   - Repeat until unlocked!
-
-4. **Retrieve Items**
-   - Switch to the **Journey** tab
-   - See all your unlocked items
-   - **Left-click**: Get 1 item
-   - **Shift + Left-click**: Get 64 items
-   - Use the search box to filter items
+1. Enable Journey Mode: `/journeymode on`
+2. Press `J` to open the menu
+3. Switch to **Deposit** tab
+4. Place an item in the deposit slot
+5. Click **Submit** button
+6. Watch progress towards unlocking!
 
 ### Understanding Thresholds
+- **Common Items:** 32-64 items
+- **Intermediate Items:** 64-128 items
+- **Complex Items:** 128-256 items
+- **Rare/End-game Items:** 256+ items
 
-Journey Mode uses **smart thresholds** based on item complexity:
-
-| Item Type | Example | Threshold |
-|-----------|---------|-----------|
-| **Tools & Armor** | Diamond Pickaxe | 1 item |
-| **Complex Crafted** | Redstone Comparator | 1 item |
-| **Raw Materials** | Iron Ore, Logs | 64 items (full stack) |
-| **Crafted (Depth 1)** | Iron Ingot, Planks | 32 items (50%) |
-| **Crafted (Depth 2)** | Iron Block | 16 items (25%) |
-| **Non-Stackable** | Bucket, Shears | 1 item |
-
-*Thresholds can be customized in config for individual items!*
+Check threshold in real-time by hovering over items in the deposit slot!
 
 ### Commands
-
-```bash
-/journeymode on       # Enable Journey Mode for yourself
-/journeymode off      # Disable Journey Mode for yourself
-/journeymode status   # Check if Journey Mode is enabled
-/journeymode          # Same as status
+```
+/journeymode on      # Enable Journey Mode
+/journeymode off     # Disable Journey Mode
+/journeymode status  # Check if enabled
 ```
 
 ## ⚙️ Configuration
 
-Config files are located in `config/journeymode/` (or `config/Journey Mode/` for older versions)
+Configuration files are located in `config/journeymode/`:
 
-### blacklist.json
-
-Prevent specific items from being unlockable:
-
+### `blacklist.json`
 ```json
 {
-  "_comment": "Add item IDs to blacklist them from Journey Mode",
   "blacklisted_items": [
     "minecraft:bedrock",
-    "minecraft:barrier",
-    "minecraft:command_block",
-    "minecraft:structure_void"
+    "minecraft:command_block"
   ]
 }
 ```
 
-### custom_thresholds.json
-
-Override unlock requirements for specific items:
-
+### `custom_thresholds.json`
 ```json
 {
-  "_comment": "Override unlock thresholds for specific items",
-  "thresholds": {
-    "minecraft:diamond": 10,
-    "minecraft:netherite_ingot": 5,
-    "minecraft:elytra": 1,
-    "minecraft:enchanted_golden_apple": 3
-  }
+  "minecraft:diamond": 64,
+  "minecraft:netherite_ingot": 256
 }
 ```
-
-All config changes **hot-reload** - no server restart needed!
 
 ## 🗺️ Roadmap
 
 ### Current Status
-- ✅ **Phase 1**: NeoForge 1.21.1 Core Features (Complete)
-- ✅ **Phase 2**: Multi-Loader Architecture (Complete)
-- ✅ **Phase 3**: NeoForge 1.21.x Full Family Support (Complete)
-- ✅ **Phase 4**: Fabric 1.21.x Implementation (Complete)
+- ✅ Core research system (Stable)
+- ✅ Data persistence (Fixed in v1.6.1)
+- ✅ Multi-loader support
+- ✅ Custom sounds system
+- ✅ Configuration system
 
 ### Future Plans
-
-#### Phase 5: Multi-Version Support
-- 🔄 **Forge 1.20.1, 1.19.2, 1.16.5** - Backport to popular Forge versions
-- 🔄 **Fabric 1.20.1, 1.19.2, 1.16.5** - Backport to popular Fabric versions
-- 🔄 **NeoForge 1.20.1** - Backport to NeoForge's first version
-- 🔄 **Forge 1.12.2** - Legacy support for long-term packs
-
-#### Phase 6: Polish & Features
-- ✨ Custom GUI textures (replace placeholder rendering)
-- ✨ Export/import unlocked items
-- ✨ Statistics tracking dashboard
-- ✨ Sound effects for unlock events
-- ✨ Particle effects on deposit/unlock
-- ✨ Achievement system for milestones
-
-#### Phase 7: Multiplayer Features
-- 👥 Team/shared unlocks
-- 🔄 Server-side config sync
-- 📊 Leaderboards
-- 🎁 Trade unlocked items
-
-#### Phase 8: API & Integration
-- 🔌 Public API for other mods
-- 🤝 EMI/JEI integration
-- 🛠️ Better modpack maker tools
+- 🔄 Creative mode integration
+- 🔄 Statistics tracking
+- 🔄 Multiplayer sync improvements
+- 🔄 Item categories/filters
 
 ## 📊 Version Support Matrix
 
-| Minecraft Version | Forge | Fabric | NeoForge | Status |
-|-------------------|-------|--------|----------|---------|
-| **1.12.2** | ✅ Planned | ❌ N/A | ❌ N/A | Legacy Support |
-| **1.16.5** | ✅ Planned | ✅ Planned | ❌ N/A | Wide Adoption |
-| **1.19.2** | ✅ Planned | ✅ Planned | ❌ N/A | Stable & Popular |
-| **1.20.1** | ✅ Planned | ✅ Planned | ✅ Planned | Recent Stable |
-| **1.21.x** | ⚠️ Limited | ✅ **Current** | ✅ **Current** | Modern |
-
-**Legend**:
-- ✅ Planned/Supported
-- ⚠️ Limited Support (Forge ending for 1.21+)
-- ❌ Not Available
-
-**Important Notes**:
-- **Forge 1.21.1+**: Forge support is ending for Minecraft 1.21+. While technically possible, NeoForge is the recommended loader for 1.21.1+ versions.
-- **NeoForge**: Only exists for Minecraft 1.20.1 and newer (forked from Forge in 2023)
-- **Fabric**: Available and actively supported for all listed versions
+| Minecraft | Fabric | NeoForge | Status |
+|:---------:|:------:|:--------:|:------:|
+| 1.21.x | ✅ v1.6.1 | ✅ v1.6.0 | **Stable** |
+| 1.20.x | ❌ | ❌ | Not Supported |
 
 ## 🔧 Development Setup
 
 ### Prerequisites
-- JDK 21 or later (JDK 22 recommended)
-- Git
+- JDK 21
+- Gradle (included via wrapper)
 
 ### Building from Source
-
-```powershell
+```bash
 # Clone the repository
 git clone https://github.com/Aryangpt007/Journey-Mode.git
 cd Journey-Mode
 
-# Build the mod
-.\gradlew.bat build
+# Build Fabric version
+./gradlew :fabric-1.21.x:build
 
-# The built JAR will be in build/libs/
+# Build NeoForge version
+./gradlew :neoforge-1.21.1:build
+
+# Output JARs will be in:
+# fabric-1.21.x/build/libs/
+# neoforge-1.21.1/build/libs/
 ```
 
 ### Running in Development
+```bash
+# Fabric
+./gradlew :fabric-1.21.x:runClient
 
-```powershell
-# Run Minecraft client in development mode
-.\gradlew.bat runClient
-
-# Run dedicated server in development mode
-.\gradlew.bat runServer
+# NeoForge
+./gradlew :neoforge-1.21.1:runClient
 ```
 
 ### Project Structure
-
 ```
-journey-mode/
-├── common/                    # 90% - Shared code
-│   ├── core/                 # JourneyData model
-│   ├── logic/                # ConfigHandler, Calculators
-│   └── platform/             # PlatformHelper interface
-├── neoforge-1.21.1/          # 10% - NeoForge wrappers
-└── fabric-1.21.x/            # 10% - Fabric wrappers
+Journey-Mode/
+├── common/              # Shared code (data, logic, config)
+├── fabric-1.21.x/      # Fabric-specific implementation
+├── neoforge-1.21.1/    # NeoForge-specific implementation
+└── gradle/             # Build configuration
 ```
 
 ## 🐛 Known Issues
 
-- Data persistence on player death/respawn needs enhancement
-- No configuration file yet for customizing the unlock threshold
-- GUI texture uses placeholder rendering (no custom texture PNG)
+See [Issues](https://github.com/Aryangpt007/Journey-Mode/issues) for active bugs and feature requests.
+
+**Reporting Bugs:** Please include:
+- Minecraft version
+- Mod loader + version
+- Crash logs (if applicable)
+- Steps to reproduce
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests.
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
+**Quick Start:**
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a Pull Request
 
 ## 📋 Changelog
 
-### Fabric v1.0.0 (October 31, 2025)
-**First full Fabric release! 🎉**
-
-#### Features
-- ✅ Full menu and screen system with deposit and retrieval tabs
-- ✅ Complete networking (4 packets) using Fabric API
-- ✅ Player data persistence with NBT storage
-- ✅ Command system (`/journeymode on/off/status`)
-- ✅ Keybind support (J key)
-- ✅ Platform abstraction implementation
-- ✅ Common module integration
-- ✅ Search and filter functionality
-- ✅ Smart item sorting by unlock time
-- ✅ Dynamic threshold system
-- ✅ Configuration support (blacklist, custom thresholds)
-
----
-
-### NeoForge v1.6.0 (October 31, 2025)
-**Extended 1.21.x family support**
-
-#### Changes
-- ✅ Extended Minecraft version support to entire 1.21.x family
-- ✅ Now supports: 1.21, 1.21.1, 1.21.2, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9, 1.21.10
-- ✅ Updated version range from `[1.21.1,1.22)` to `[1.21,1.22)`
-
----
-
-### NeoForge v1.5.0 (October 31, 2025)
-**Multi-Loader Architecture**
-
-#### Major Changes
-- 🏗️ 90/10 Multi-Loader Architecture
-- Created `common` module (platform-agnostic)
-- Created `neoforge-1.21.1` module (loader-specific)
-- Service Loader pattern for platform detection
-
-#### Bug Fixes
-- 🔧 Fixed deposit slot visibility
-- 🔧 Fixed AttachmentType serialization
-- 🔧 Player data saves/loads correctly
-
----
-
-### NeoForge v1.4.0 (October 31, 2025)
-**Phase 1 Complete**
-
-#### Features
-- ✅ Journey Mode toggle (`/journeymode on/off/status`)
-- ⚙️ JSON configuration system
-  - `blacklist.json` - Item blacklist
-  - `custom_thresholds.json` - Custom thresholds
-  - Hot-reload support
-
----
-
-### Version 1.3.4 - v1.0.0
-
-See [full version history](https://github.com/Aryangpt007/Journey-Mode/releases)
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🔗 Links
 
-- **GitHub**: [Aryangpt007/Journey-Mode](https://github.com/Aryangpt007/Journey-Mode)
-- **CurseForge**: [Journey Mode](https://www.curseforge.com/minecraft/mc-mods/journey-mode)
-- **Modrinth**: [Journey Mode](https://modrinth.com/mod/journey-mode)
-- **Issues**: [Report a Bug](https://github.com/Aryangpt007/Journey-Mode/issues)
+- **Original Repository:** [Aryangpt007/Journey-Mode](https://github.com/Aryangpt007/Journey-Mode)
+- **Issues:** [Report Bugs](https://github.com/Aryangpt007/Journey-Mode/issues)
+- **Discussions:** [Community Forum](https://github.com/Aryangpt007/Journey-Mode/discussions)
 
 ## 👤 Author
 
-**Aryangpt007** - [@Aryangpt007](https://github.com/Aryangpt007)
+**Original Creator:** Aryangpt007
+- GitHub: [@Aryangpt007](https://github.com/Aryangpt007)
+
+**Fork Maintainer:** [Your Name]
+- Contributions: v1.6.1 stability improvements
 
 ## 🙏 Acknowledgments
 
-- NeoForge team for the excellent modding framework
-- Fabric team for the modding API
-- Minecraft modding community for documentation and support
+- Inspired by **Terraria's Journey Mode**
+- Thanks to the Fabric and NeoForge communities
+- Special thanks to all contributors and testers
 
 ---
 
-**Made with ❤️ for the Minecraft community**
+**⭐ If this mod helps your builds, consider starring the repo!**

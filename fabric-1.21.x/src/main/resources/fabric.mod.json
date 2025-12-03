@@ -1,0 +1,35 @@
+{
+    "schemaVersion": 1,
+    "id": "journeymode",
+    "version": "${version}",
+    "name": "Journey Mode",
+    "description": "Unlock unlimited access to items after collecting enough of them",
+    "authors": [
+        "Aryangpt007"
+    ],
+    "contact": {
+        "homepage": "https://github.com/Aryangpt007/Journey-Mode",
+        "sources": "https://github.com/Aryangpt007/Journey-Mode",
+        "issues": "https://github.com/Aryangpt007/Journey-Mode/issues"
+    },
+    "license": "MIT",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.aryangpt007.journeymode.fabric.JourneyModeFabric"
+        ],
+        "client": [
+            "com.aryangpt007.journeymode.fabric.client.JourneyModeClient"
+        ]
+    },
+    "mixins": [],
+    "depends": {
+        "fabricloader": ">=0.16.0",
+        "fabric-api": "*",
+        "minecraft": "~1.21",
+        "java": ">=21"
+    },
+    "suggests": {
+        "modmenu": "*"
+    }
+}

@@ -5,6 +5,11 @@ plugins {
     id 'java'
 }
 
+java.toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+    vendor = JvmVendorSpec.ADOPTIUM
+}
+
 allprojects {
     group = project.mod_group_id
     version = project.mod_version
@@ -18,7 +23,10 @@ subprojects {
         mavenLocal()
     }
     
-    java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+    java.toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
     
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'

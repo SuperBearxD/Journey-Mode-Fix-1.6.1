@@ -13,11 +13,14 @@ import net.minecraft.server.level.ServerPlayer;
  * Packet to submit items in the deposit slot
  */
 public record SubmitDepositPacket() implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<SubmitDepositPacket> TYPE = 
-        new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(JourneyModeFabric.MOD_ID, "submit_deposit"));
+    public static final CustomPacketPayload.Type<SubmitDepositPacket> TYPE = new CustomPacketPayload.Type<>(
+            ResourceLocation.fromNamespaceAndPath(JourneyModeFabric.MOD_ID, "submit_deposit"));
 
-    public static final StreamCodec<FriendlyByteBuf, SubmitDepositPacket> STREAM_CODEC = 
-        StreamCodec.unit(new SubmitDepositPacket());
+    public static final StreamCodec<FriendlyByteBuf, SubmitDepositPacket> STREAM_CODEC = StreamCodec.of(
+            (buf, packet) -> {
+            }, // Write nothing
+            (buf) -> new SubmitDepositPacket() // Read creates empty packet
+    );
 
     @Override
     public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {

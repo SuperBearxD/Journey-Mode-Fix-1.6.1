@@ -1,0 +1,32 @@
+plugins {
+    id 'fabric-loom' version '1.7-SNAPSHOT'
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    
+    // Include common module in the JAR
+    implementation project(':common')
+    include project(':common')
+}
+
+loom {
+    runs {
+        client {
+            client()
+            configName = "Fabric Client"
+            ideConfigGenerated = true
+            runDir = "runs/client"
+        }
+        server {
+            server()
+            configName = "Fabric Server"
+            ideConfigGenerated = true
+            runDir = "runs/server"
+        }
+    }
+}

@@ -16,11 +16,14 @@ import net.minecraft.world.SimpleMenuProvider;
  * Packet to open the Journey Mode menu
  */
 public record OpenJourneyMenuPacket() implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<OpenJourneyMenuPacket> TYPE = 
-        new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(JourneyModeFabric.MOD_ID, "open_journey_menu"));
+    public static final CustomPacketPayload.Type<OpenJourneyMenuPacket> TYPE = new CustomPacketPayload.Type<>(
+            ResourceLocation.fromNamespaceAndPath(JourneyModeFabric.MOD_ID, "open_journey_menu"));
 
-    public static final StreamCodec<FriendlyByteBuf, OpenJourneyMenuPacket> STREAM_CODEC = 
-        StreamCodec.unit(new OpenJourneyMenuPacket());
+    public static final StreamCodec<FriendlyByteBuf, OpenJourneyMenuPacket> STREAM_CODEC = StreamCodec.of(
+            (buf, packet) -> {
+            }, // Write nothing
+            (buf) -> new OpenJourneyMenuPacket() // Read creates empty packet
+    );
 
     @Override
     public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
@@ -34,16 +37,14 @@ public record OpenJourneyMenuPacket() implements CustomPacketPayload {
             JourneyData data = FabricDataHandler.getJourneyData(serverPlayer);
             if (data == null || !data.isEnabled()) {
                 serverPlayer.displayClientMessage(
-                    net.minecraft.network.chat.Component.translatable("journeymode.disabled_message"),
-                    false
-                );
+                        net.minecraft.network.chat.Component.translatable("journeymode.disabled_message"),
+                        false);
                 return;
             }
-            
+
             serverPlayer.openMenu(new SimpleMenuProvider(
-                (containerId, playerInventory, player) -> new JourneyModeMenu(containerId, playerInventory),
-                net.minecraft.network.chat.Component.translatable("journeymode.menu.title")
-            ));
+                    (containerId, playerInventory, player) -> new JourneyModeMenu(containerId, playerInventory),
+                    net.minecraft.network.chat.Component.translatable("journeymode.menu.title")));
         });
     }
 }

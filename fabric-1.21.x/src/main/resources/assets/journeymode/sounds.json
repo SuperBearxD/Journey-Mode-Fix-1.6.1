@@ -1,0 +1,23 @@
+{
+    "research_sound": {
+        "category": "player",
+        "subtitle": "journeymode.subtitle.research_complete",
+        "sounds": [
+            "journeymode:research_sound"
+        ]
+    },
+    "pre_research_1": {
+        "category": "player",
+        "subtitle": "journeymode.subtitle.research_progress",
+        "sounds": [
+            "journeymode:pre-research1"
+        ]
+    },
+    "pre_research_2": {
+        "category": "player",
+        "subtitle": "journeymode.subtitle.research_progress",
+        "sounds": [
+            "journeymode:pre-research2"
+        ]
+    }
+}
