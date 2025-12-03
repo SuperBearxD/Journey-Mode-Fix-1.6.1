@@ -33,8 +33,9 @@ public class JourneyMode {
 
     // Registration for menus
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
-    public static final DeferredHolder<MenuType<?>, MenuType<JourneyModeMenu>> JOURNEY_MODE_MENU = 
-        MENUS.register("journey_mode_menu", () -> new MenuType<>((id, inventory) -> new JourneyModeMenu(id, inventory), net.minecraft.world.flag.FeatureFlags.VANILLA_SET));
+    public static final DeferredHolder<MenuType<?>, MenuType<JourneyModeMenu>> JOURNEY_MODE_MENU = MENUS
+            .register("journey_mode_menu", () -> new MenuType<>((id, inventory) -> new JourneyModeMenu(id, inventory),
+                    net.minecraft.world.flag.FeatureFlags.VANILLA_SET));
 
     public JourneyMode(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info("Journey Mode is loading... (Multi-loader architecture v1.5.0)");
@@ -45,17 +46,40 @@ public class JourneyMode {
 
         // Register deferred registries
         MENUS.register(modEventBus);
-        NeoForgeDataHandler.ATTACHMENTS.register(modEventBus);
+        com.aryangpt007.journeymode.sound.ModSounds.SOUNDS.register(modEventBus);
 
         // Register network packets
         NetworkHandler.register(modEventBus);
 
         // Register events
         NeoForge.EVENT_BUS.register(new JourneyModeEvents());
-        
+
         // Register commands
         NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> {
             JourneyModeCommand.register(event.getDispatcher());
+        });
+
+        // Register lifecycle events for data persistence
+        NeoForge.EVENT_BUS
+                .addListener((net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) -> {
+                    if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                        NeoForgeDataHandler.loadPlayerData(serverPlayer);
+                    }
+                });
+
+        NeoForge.EVENT_BUS
+                .addListener((net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent event) -> {
+                    if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                        NeoForgeDataHandler.savePlayerData(serverPlayer);
+                        NeoForgeDataHandler.removePlayerData(serverPlayer.getUUID());
+                    }
+                });
+
+        NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.server.ServerStoppingEvent event) -> {
+            // Save all online players
+            for (net.minecraft.server.level.ServerPlayer player : event.getServer().getPlayerList().getPlayers()) {
+                NeoForgeDataHandler.savePlayerData(player);
+            }
         });
 
         // Client-side setup

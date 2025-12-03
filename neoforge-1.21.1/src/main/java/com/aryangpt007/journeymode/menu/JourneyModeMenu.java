@@ -44,13 +44,19 @@ public class JourneyModeMenu extends AbstractContainerMenu {
         private ItemStack stack = ItemStack.EMPTY;
 
         @Override
-        public int getContainerSize() { return 1; }
+        public int getContainerSize() {
+            return 1;
+        }
 
         @Override
-        public boolean isEmpty() { return stack.isEmpty(); }
+        public boolean isEmpty() {
+            return stack.isEmpty();
+        }
 
         @Override
-        public ItemStack getItem(int slot) { return stack; }
+        public ItemStack getItem(int slot) {
+            return stack;
+        }
 
         @Override
         public ItemStack removeItem(int slot, int amount) {
@@ -73,13 +79,18 @@ public class JourneyModeMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public void setChanged() {}
+        public void setChanged() {
+        }
 
         @Override
-        public boolean stillValid(Player player) { return true; }
+        public boolean stillValid(Player player) {
+            return true;
+        }
 
         @Override
-        public void clearContent() { stack = ItemStack.EMPTY; }
+        public void clearContent() {
+            stack = ItemStack.EMPTY;
+        }
     };
 
     public JourneyModeMenu(int containerId, Inventory playerInventory) {
@@ -101,13 +112,13 @@ public class JourneyModeMenu extends AbstractContainerMenu {
         for (int col = 0; col < 9; ++col) {
             this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 168));
         }
-        
+
         // Sync data to client when menu opens
         if (player instanceof ServerPlayer serverPlayer) {
             syncDataToClient(serverPlayer);
         }
     }
-    
+
     /**
      * Called when submit button is clicked
      */
@@ -117,15 +128,14 @@ public class JourneyModeMenu extends AbstractContainerMenu {
             PacketDistributor.sendToServer(new com.aryangpt007.journeymode.network.packets.SubmitDepositPacket());
         }
     }
-    
+
     private void syncDataToClient(ServerPlayer player) {
         // Get fresh data
         JourneyData data = NeoForgeDataHandler.getJourneyData(player);
         PacketDistributor.sendToPlayer(player, new SyncJourneyDataPacket(
-            data.getCollectedCounts(),
-            data.getUnlockedItems(),
-            data.getUnlockTimestamps()
-        ));
+                data.getCollectedCounts(),
+                data.getUnlockedItems(),
+                data.getUnlockTimestamps()));
     }
 
     @Override
@@ -133,71 +143,92 @@ public class JourneyModeMenu extends AbstractContainerMenu {
         super.slotsChanged(container);
         // Don't auto-process items - only process on submit button click
     }
-    
+
+    /**
+     * Process the deposit (called from server via packet)
+     */
     /**
      * Process the deposit (called from server via packet)
      */
     public void processDeposit() {
-        if (player.level().isClientSide) return;
-        
+        if (player.level().isClientSide)
+            return;
+
         ItemStack stack = depositSlot.getItem(0);
         if (!stack.isEmpty()) {
             // Get fresh journey data
             JourneyData data = NeoForgeDataHandler.getJourneyData(player);
-            
+
             // Check if blacklisted
             String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
             if (ConfigHandler.isBlacklisted(itemId)) {
                 player.displayClientMessage(
-                    JourneyMode.translatable("blacklist_message", stack.getHoverName()),
-                    false
-                );
+                        JourneyMode.translatable("blacklist_message", stack.getHoverName()),
+                        false);
                 return; // Don't consume the item
             }
-            
+
             // Check if already unlocked
             if (data.isUnlocked(itemId)) {
                 player.displayClientMessage(
-                    Component.literal("§e" + stack.getHoverName().getString() + " is already unlocked!"),
-                    false
-                );
+                        Component.literal("§e" + stack.getHoverName().getString() + " is already unlocked!"),
+                        false);
                 return; // Don't consume the item
             }
-            
+
             // Calculate threshold using platform abstraction
-            com.aryangpt007.journeymode.logic.ThresholdCalculator calculator = 
-                new com.aryangpt007.journeymode.logic.ThresholdCalculator(
+            com.aryangpt007.journeymode.logic.ThresholdCalculator calculator = new com.aryangpt007.journeymode.logic.ThresholdCalculator(
                     player.level().getRecipeManager(),
-                    player.level().registryAccess()
-                );
+                    player.level().registryAccess());
             int threshold = calculator.calculateThreshold(stack.getItem());
-            
-            // Deposit the items
-            boolean unlocked = data.depositItem(itemId, stack.getCount(), threshold);
-            
-            // Save the updated data
-            NeoForgeDataHandler.saveJourneyData(player, data);
-            
-            // Clear the deposit slot
-            depositSlot.setItem(0, ItemStack.EMPTY);
-            
-            if (unlocked) {
-                player.displayClientMessage(
-                    JourneyMode.translatable("unlock_message", stack.getHoverName(), threshold),
-                    false
-                );
+            int currentCollected = data.getCollectedCount(itemId);
+            int needed = Math.max(0, threshold - currentCollected);
+            int toDeposit = Math.min(stack.getCount(), needed);
+
+            if (toDeposit > 0) {
+                // Deposit only needed amount
+                boolean unlocked = data.depositItem(itemId, toDeposit, threshold);
+                NeoForgeDataHandler.saveJourneyData(player, data);
+
+                // Keep remainder in slot
+                if (toDeposit >= stack.getCount()) {
+                    depositSlot.setItem(0, ItemStack.EMPTY);
+                } else {
+                    stack.shrink(toDeposit);
+                }
+
+                if (unlocked) {
+                    player.displayClientMessage(
+                            JourneyMode.translatable("unlock_message", stack.getHoverName(), threshold),
+                            false);
+                    // Play unlock/completion sound
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                            com.aryangpt007.journeymode.sound.ModSounds.RESEARCH_SOUND.get(),
+                            net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 1.0f);
+                } else {
+                    int progress = data.getProgress(itemId, threshold);
+                    int collected = data.getCollectedCount(itemId);
+                    player.displayClientMessage(
+                            JourneyMode.translatable("deposit_message", toDeposit, stack.getHoverName(), collected,
+                                    threshold, progress),
+                            true // Action bar
+                    );
+                    // Play random progress sound
+                    net.minecraft.sounds.SoundEvent progressSound = player.level().random.nextBoolean()
+                            ? com.aryangpt007.journeymode.sound.ModSounds.PRE_RESEARCH_1.get()
+                            : com.aryangpt007.journeymode.sound.ModSounds.PRE_RESEARCH_2.get();
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                            progressSound, net.minecraft.sounds.SoundSource.PLAYERS, 1.0f, 1.0f);
+                }
+
+                // Sync updated data to client
+                if (player instanceof ServerPlayer serverPlayer) {
+                    syncDataToClient(serverPlayer);
+                }
             } else {
-                int progress = data.getProgress(itemId, threshold);
-                int collected = data.getCollectedCount(itemId);
                 player.displayClientMessage(
-                    JourneyMode.translatable("deposit_message", stack.getCount(), stack.getHoverName(), collected, threshold, progress),
-                    true // Action bar
-                );
-            }
-            
-            // Sync updated data to client
-            if (player instanceof ServerPlayer serverPlayer) {
-                syncDataToClient(serverPlayer);
+                        Component.literal("§e" + stack.getHoverName().getString() + " is already at threshold!"),
+                        false);
             }
         }
     }
@@ -206,7 +237,7 @@ public class JourneyModeMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        
+
         if (slot.hasItem()) {
             ItemStack slotStack = slot.getItem();
             itemstack = slotStack.copy();
@@ -214,7 +245,7 @@ public class JourneyModeMenu extends AbstractContainerMenu {
             // Slot 0 is deposit slot
             // Slots 1-27 are player inventory
             // Slots 28-36 are player hotbar
-            
+
             if (index == 0) {
                 // Moving FROM deposit slot TO player inventory
                 if (!this.moveItemStackTo(slotStack, 1, this.slots.size(), true)) {
@@ -241,7 +272,7 @@ public class JourneyModeMenu extends AbstractContainerMenu {
     public boolean stillValid(Player player) {
         return true;
     }
-    
+
     @Override
     public void removed(Player player) {
         super.removed(player);
@@ -262,7 +293,8 @@ public class JourneyModeMenu extends AbstractContainerMenu {
     }
 
     /**
-     * Enable or disable the deposit slot (called from client screen when tab changes)
+     * Enable or disable the deposit slot (called from client screen when tab
+     * changes)
      */
     public void setDepositSlotEnabled(boolean enabled) {
         this.depositSlotEnabled = enabled;
