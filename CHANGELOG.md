@@ -5,9 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.1-fabric] - 2025-12-03
+## [v1.6.1] - 2025-12-03
 
-### Fixed
+### 🚀 Major Improvements (Fabric & NeoForge)
+- **Unified Feature Parity**: Both Fabric and NeoForge versions now share the exact same features and stability fixes.
+- **New Data Persistence System**: Switched from NBT/Attachments to reliable JSON file storage.
+  - Fixes player data loss on server restarts.
+  - Data is now stored in `<world>/journeymode/<uuid>.json`.
+- **Custom Sound System**: Added 3 new sound effects.
+  - `research_sound.ogg`: Plays upon completing a research threshold.
+  - `pre-research1/2.ogg`: Randomly plays during progress.
+- **UI Polish**:
+  - Fixed search box closing the screen when typing 'E'.
+  - Fixed item overflow destroying items (excess items now stay in slot).
+  - Added proper "Journey Mode" window title.
+
+### 🐛 Bug Fixes
+- Fixed `ClassCastException` in network packets.
+- Fixed empty packet handling for 1.21.x networking.
+- Fixed item loss when depositing more than the threshold.
+
+### Fixed (Detailed)
 - 🔧 **Critical:** Fixed `ClassCastException` when opening Journey Mode menu
   - Corrected packet registration order (PayloadTypes before handlers)
   - Added missing `OpenJourneyMenuPacket` registration
