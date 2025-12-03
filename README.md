@@ -246,7 +246,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) for deta
 **Original Creator:** Aryangpt007
 - GitHub: [@Aryangpt007](https://github.com/Aryangpt007)
 
-**Fork Maintainer:** [Your Name]
+**Fork Maintainer:** SuperBearxD
 - Contributions: v1.6.1 stability improvements
 
 ## 🙏 Acknowledgments
